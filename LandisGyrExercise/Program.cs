@@ -12,7 +12,7 @@ namespace LandisGyrExercise
             var endpointDatabase = new EndpointMemoryDatabase();
 
             var controller = new MainController(userInterface, endpointDatabase);
-            controller.Start();
+            controller.Run();
         }
     }
 }

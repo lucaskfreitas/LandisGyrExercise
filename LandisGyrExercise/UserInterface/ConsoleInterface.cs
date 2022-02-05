@@ -4,7 +4,7 @@ using System;
 
 namespace LandisGyrExercise.UserInterface
 {
-    class ConsoleInterface : IUserInterface
+    public class ConsoleInterface : IUserInterface
     {
         public bool ConfirmAction()
         {
@@ -43,52 +43,44 @@ namespace LandisGyrExercise.UserInterface
             Console.WriteLine("6 - Exit");
             Console.WriteLine("");
 
-            return Console.ReadLine() switch
-            {
-                "1" => UserAction.AddEndpoint,
-                "2" => UserAction.EditEndpoint,
-                "3" => UserAction.DeleteEndpoint,
-                "4" => UserAction.ListAllEndpoints,
-                "5" => UserAction.FindEndpointBySerialNumber,
-                "6" => UserAction.Exit,
-                _ => throw new InvalidOperationException(),
-            };
+            string userInput = Console.ReadLine();
+            return Enum.Parse<UserAction>(userInput);
         }
 
         public string QueryMeterFirmwareVersion()
         {
-            Console.WriteLine("Firmware version");
+            Console.WriteLine("What is the meter firmware version?");
             return Console.ReadLine();
         }
 
         public int QueryMeterModelId()
         {
-            Console.WriteLine("Meter model ID");
+            Console.WriteLine("What is the meter model ID?");
             return int.Parse(Console.ReadLine());
         }
 
         public int QueryMeterNumber()
         {
-            Console.WriteLine("Meter number");
+            Console.WriteLine("What is the meter number?");
             return int.Parse(Console.ReadLine());
         }
 
         public string QuerySerialNumber()
         {
-            Console.WriteLine("Serial number");
+            Console.WriteLine("What is the serial number?");
             return Console.ReadLine();
         }
 
         public SwitchState QuerySwitchState()
         {
-            Console.WriteLine("Switch state (0 = Disconnected, 1 = Connected, 2 = Armed)");
+            Console.WriteLine("Select a switch state: 0 = Disconnected, 1 = Connected, 2 = Armed");
             int choice = int.Parse(Console.ReadLine());
             return (SwitchState)choice;
         }
 
         public void ShowError(Exception e)
         {
-            Console.WriteLine("ERROR");
+            Console.WriteLine("An exception has occurred:");
             Console.WriteLine(e.Message);
         }
     }

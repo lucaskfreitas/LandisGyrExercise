@@ -17,7 +17,7 @@ namespace LandisGyrExercise.Controller
             _endpointRepository = endpointRepository;
         }
 
-        public void Start()
+        public void Run()
         {
             while (true)
             {

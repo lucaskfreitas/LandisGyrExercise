@@ -7,7 +7,7 @@ namespace LandisGyrExercise.Model
     {
         private readonly string _serialNumber;
         private int _meterModelId = 0;
-        private int _switchState;
+        private int _switchState = 0;
 
         public string SerialNumber { get => _serialNumber; }
         public int MeterModelId
@@ -28,6 +28,9 @@ namespace LandisGyrExercise.Model
             get => (SwitchState)_switchState;
             set
             {
+                if (!Enum.IsDefined(typeof(SwitchState), value))
+                    throw new InvalidCastException();
+
                 _switchState = (int)value;
             }
         }
@@ -35,7 +38,7 @@ namespace LandisGyrExercise.Model
         public Endpoint(string serialNumber)
         {
             _serialNumber = serialNumber;
-            DetermineMeterModel();
+            _meterModelId = DetermineMeterModel();
         }
 
         public bool IsMeterModelSet()
@@ -43,26 +46,16 @@ namespace LandisGyrExercise.Model
             return _meterModelId > 0;
         }
 
-        private void DetermineMeterModel()
+        private int DetermineMeterModel()
         {
-            switch (_serialNumber)
+            return _serialNumber switch
             {
-                case "NSX1P2W":
-                    _meterModelId = 16;
-                    break;
-
-                case "NSX1P3W":
-                    _meterModelId = 17;
-                    break;
-
-                case "NSX2P3W":
-                    _meterModelId = 18;
-                    break;
-
-                case "NSX3P4W":
-                    _meterModelId = 19;
-                    break;
-            }
+                "NSX1P2W" => 16,
+                "NSX1P3W" => 17,
+                "NSX2P3W" => 18,
+                "NSX3P4W" => 19,
+                _ => 0,
+            };
         }
     }
 }
