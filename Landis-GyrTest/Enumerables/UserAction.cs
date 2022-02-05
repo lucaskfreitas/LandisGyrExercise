@@ -1,4 +1,4 @@
-﻿namespace LandisGyrTest.Enumerables
+﻿namespace LandisGyrExercise.Enumerables
 {
     public enum UserAction
     {

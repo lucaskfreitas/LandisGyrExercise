@@ -1,10 +1,10 @@
-﻿using LandisGyrTest.EndpointRepository;
-using LandisGyrTest.Model;
-using LandisGyrTest.Enumerables;
-using LandisGyrTest.UserInterface;
+﻿using LandisGyrExercise.EndpointRepository;
+using LandisGyrExercise.Model;
+using LandisGyrExercise.Enumerables;
+using LandisGyrExercise.UserInterface;
 using System;
 
-namespace LandisGyrTest.Controller
+namespace LandisGyrExercise.Controller
 {
     public class MainController
     {

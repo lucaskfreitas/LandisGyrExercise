@@ -1,7 +1,7 @@
-﻿using LandisGyrTest.Enumerables;
+﻿using LandisGyrExercise.Enumerables;
 using System;
 
-namespace LandisGyrTest.Model
+namespace LandisGyrExercise.Model
 {
     public class Endpoint
     {

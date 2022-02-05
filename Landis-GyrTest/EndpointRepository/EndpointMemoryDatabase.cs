@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LandisGyrTest.Model;
+using LandisGyrExercise.Model;
 
-namespace LandisGyrTest.EndpointRepository
+namespace LandisGyrExercise.EndpointRepository
 {
     public class EndpointMemoryDatabase : IEndpointRepository
     {

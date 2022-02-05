@@ -1,7 +1,7 @@
-﻿using LandisGyrTest.Model;
+﻿using LandisGyrExercise.Model;
 using System.Collections.Generic;
 
-namespace LandisGyrTest.EndpointRepository
+namespace LandisGyrExercise.EndpointRepository
 {
     public interface IEndpointRepository
     {

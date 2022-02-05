@@ -1,8 +1,8 @@
-﻿using LandisGyrTest.Controller;
-using LandisGyrTest.EndpointRepository;
-using LandisGyrTest.UserInterface;
+﻿using LandisGyrExercise.Controller;
+using LandisGyrExercise.EndpointRepository;
+using LandisGyrExercise.UserInterface;
 
-namespace LandisGyrTest
+namespace LandisGyrExercise
 {
     class Program
     {

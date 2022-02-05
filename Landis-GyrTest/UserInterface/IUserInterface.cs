@@ -1,8 +1,8 @@
-﻿using LandisGyrTest.Model;
-using LandisGyrTest.Enumerables;
+﻿using LandisGyrExercise.Model;
+using LandisGyrExercise.Enumerables;
 using System;
 
-namespace LandisGyrTest.UserInterface
+namespace LandisGyrExercise.UserInterface
 {
     public interface IUserInterface
     {
