@@ -1,6 +1,5 @@
 ﻿using LandisGyrExercise.EndpointRepository;
 using LandisGyrExercise.Model;
-using LandisGyrExercise.Enumerables;
 using LandisGyrExercise.UserInterface;
 using System;
 
@@ -14,51 +13,17 @@ namespace LandisGyrExercise.Controller
         public MainController(IUserInterface userInterface, IEndpointRepository endpointRepository)
         {
             _userInterface = userInterface;
+            _userInterface.SetController(this);
+
             _endpointRepository = endpointRepository;
         }
 
         public void Run()
         {
-            while (true)
-            {
-                try
-                {
-                    switch (_userInterface.QueryAction())
-                    {
-                        case UserAction.AddEndpoint:
-                            AddEndpoint();
-                            break;
-
-                        case UserAction.EditEndpoint:
-                            EditEndpoint();
-                            break;
-
-                        case UserAction.DeleteEndpoint:
-                            DeleteEndpoint();
-                            break;
-
-                        case UserAction.ListAllEndpoints:
-                            ListAllEndpoints();
-                            break;
-
-                        case UserAction.FindEndpointBySerialNumber:
-                            FindEndpointBySerialNumber();
-                            break;
-
-                        case UserAction.Exit:
-                            if (_userInterface.ConfirmAction())
-                                return;
-                            break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    _userInterface.ShowError(e);
-                }
-            }
+            _userInterface.Run();
         }
 
-        private void AddEndpoint()
+        public void AddEndpoint()
         {
             string serialNumber = _userInterface.QuerySerialNumber();
             if (_endpointRepository.ExistsEndpoint(serialNumber))
@@ -76,7 +41,7 @@ namespace LandisGyrExercise.Controller
             _endpointRepository.AddEndpoint(endpoint);
         }
 
-        private void EditEndpoint()
+        public void EditEndpoint()
         {
             string serialNumber = _userInterface.QuerySerialNumber();
             Endpoint endpoint = _endpointRepository.GetEndpoint(serialNumber);
@@ -84,12 +49,17 @@ namespace LandisGyrExercise.Controller
             endpoint.SwitchState = _userInterface.QuerySwitchState();
         }
 
-        private void DeleteEndpoint()
+        public void DeleteEndpoint()
         {
-            _endpointRepository.DeleteEndpoint(_userInterface.QuerySerialNumber());
+            string serialNumber = _userInterface.QuerySerialNumber();
+
+            if (!_endpointRepository.ExistsEndpoint(serialNumber))
+                throw new InvalidOperationException("There is no endpoint with this serial number.");
+
+            _endpointRepository.DeleteEndpoint(serialNumber);
         }
 
-        private void ListAllEndpoints()
+        public void ListAllEndpoints()
         {
             foreach (Endpoint endpoint in _endpointRepository.GetAllEndpoints())
             {
@@ -97,7 +67,7 @@ namespace LandisGyrExercise.Controller
             }
         }
 
-        private void FindEndpointBySerialNumber()
+        public void FindEndpointBySerialNumber()
         {
             string serialNumber = _userInterface.QuerySerialNumber();
             Endpoint endpoint = _endpointRepository.GetEndpoint(serialNumber);

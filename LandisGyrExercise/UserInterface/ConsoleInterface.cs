@@ -1,12 +1,62 @@
-﻿using LandisGyrExercise.Model;
+﻿using LandisGyrExercise.Controller;
 using LandisGyrExercise.Enumerables;
+using LandisGyrExercise.Model;
 using System;
 
 namespace LandisGyrExercise.UserInterface
 {
     public class ConsoleInterface : IUserInterface
     {
-        public bool ConfirmAction()
+        private MainController _controller = null;
+
+        public void SetController(MainController controller)
+        {
+            _controller = controller;
+        }
+
+        public void Run()
+        {
+            while (true)
+            {
+                try
+                {
+                    switch (QueryAction())
+                    {
+                        case UserAction.AddEndpoint:
+                            _controller.AddEndpoint();
+                            break;
+
+                        case UserAction.EditEndpoint:
+                            _controller.EditEndpoint();
+                            break;
+
+                        case UserAction.DeleteEndpoint:
+                            _controller.DeleteEndpoint();
+                            break;
+
+                        case UserAction.ListAllEndpoints:
+                            _controller.ListAllEndpoints();
+                            break;
+
+                        case UserAction.FindEndpointBySerialNumber:
+                            _controller.FindEndpointBySerialNumber();
+                            break;
+
+                        case UserAction.Exit:
+                            if (ConfirmAction())
+                                return;
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An exception has occurred:");
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+
+        private static bool ConfirmAction()
         {
             Console.WriteLine("Are you sure? (y/n)");
 
@@ -30,7 +80,7 @@ namespace LandisGyrExercise.UserInterface
             Console.WriteLine("");
         }
 
-        public UserAction QueryAction()
+        private static UserAction QueryAction()
         {
             Console.WriteLine("");
             Console.WriteLine("What do you want to do?");
@@ -76,12 +126,6 @@ namespace LandisGyrExercise.UserInterface
             Console.WriteLine("Select a switch state: 0 = Disconnected, 1 = Connected, 2 = Armed");
             int choice = int.Parse(Console.ReadLine());
             return (SwitchState)choice;
-        }
-
-        public void ShowError(Exception e)
-        {
-            Console.WriteLine("An exception has occurred:");
-            Console.WriteLine(e.Message);
         }
     }
 }

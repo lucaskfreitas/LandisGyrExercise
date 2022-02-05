@@ -1,12 +1,13 @@
-﻿using LandisGyrExercise.Model;
+﻿using LandisGyrExercise.Controller;
 using LandisGyrExercise.Enumerables;
-using System;
+using LandisGyrExercise.Model;
 
 namespace LandisGyrExercise.UserInterface
 {
     public interface IUserInterface
     {
-        public UserAction QueryAction();
+        public void SetController(MainController controller);
+        public void Run();
 
         public string QuerySerialNumber();
         public int QueryMeterModelId();
@@ -15,8 +16,5 @@ namespace LandisGyrExercise.UserInterface
         public SwitchState QuerySwitchState();
 
         public void PrintEndpointData(Endpoint endpoint);
-        public void ShowError(Exception e);
-
-        public bool ConfirmAction();
     }
 }
