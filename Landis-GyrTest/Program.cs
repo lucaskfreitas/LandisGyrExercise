@@ -1,12 +1,18 @@
-﻿using System;
+﻿using LandisGyrTest.Controller;
+using LandisGyrTest.EndpointRepository;
+using LandisGyrTest.UserInterface;
 
-namespace Landis_GyrTest
+namespace LandisGyrTest
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("Hello World!");
+            var userInterface = new ConsoleInterface();
+            var endpointDatabase = new EndpointMemoryDatabase();
+
+            var controller = new MainController(userInterface, endpointDatabase);
+            controller.Start();
         }
     }
 }
