@@ -1,6 +1,8 @@
 ﻿using LandisGyrExercise.Controller;
 using LandisGyrExercise.EndpointRepository;
 using LandisGyrExercise.UserInterface;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace LandisGyrExercise
 {
@@ -8,11 +10,17 @@ namespace LandisGyrExercise
     {
         static void Main()
         {
-            var userInterface = new ConsoleInterface();
-            var endpointDatabase = new EndpointMemoryDatabase();
+            IHost host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddTransient<IController, MainController>()
+                        .AddScoped<IUserInterface, ConsoleInterface>()
+                        .AddScoped<IEndpointRepository, EndpointMemoryDatabase>();
+                })
+                .Build();
 
-            var controller = new MainController(userInterface, endpointDatabase);
-            controller.Run();
+            MainController svc = ActivatorUtilities.CreateInstance<MainController>(host.Services);
+            svc.Run();
         }
     }
 }

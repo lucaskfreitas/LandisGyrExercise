@@ -5,7 +5,7 @@ using System;
 
 namespace LandisGyrExercise.Controller
 {
-    public class MainController
+    public class MainController : IController
     {
         private readonly IUserInterface _userInterface;
         private readonly IEndpointRepository _endpointRepository;
