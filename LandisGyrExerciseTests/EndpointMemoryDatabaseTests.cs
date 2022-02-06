@@ -22,12 +22,22 @@ namespace LandisGyrExerciseTests
         }
 
         [TestMethod]
-        public void InvalidSerialNumber()
+        public void GetEndpointWithInvalidSerialNumber()
         {
             EndpointMemoryDatabase endpointDatabase = new();
             Assert.ThrowsException<KeyNotFoundException>(() =>
             {
                 endpointDatabase.GetEndpoint("garbage serial number");
+            });
+        }
+
+        [TestMethod]
+        public void DeleteEndpointWithInvalidSerialNumber()
+        {
+            EndpointMemoryDatabase endpointDatabase = new();
+            Assert.ThrowsException<KeyNotFoundException>(() =>
+            {
+                endpointDatabase.DeleteEndpoint("garbage serial number");
             });
         }
     }

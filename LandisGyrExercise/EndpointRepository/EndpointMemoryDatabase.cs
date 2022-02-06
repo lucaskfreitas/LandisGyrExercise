@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using LandisGyrExercise.Model;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using LandisGyrExercise.Model;
 
 namespace LandisGyrExercise.EndpointRepository
 {
@@ -27,7 +27,7 @@ namespace LandisGyrExercise.EndpointRepository
             Endpoint endpoint = _endpoints.SingleOrDefault(t => t.SerialNumber == serialNumber);
 
             if (endpoint == default)
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("There is no endpoint with this serial number");
 
             return endpoint;
         }
@@ -37,14 +37,9 @@ namespace LandisGyrExercise.EndpointRepository
             return _endpoints;
         }
 
-        public void DeleteEndpoint(Endpoint endpoint)
-        {
-            _endpoints.Remove(endpoint);
-        }
-
         public void DeleteEndpoint(string serialNumber)
         {
-            DeleteEndpoint(GetEndpoint(serialNumber));
+            _endpoints.Remove(GetEndpoint(serialNumber));
         }
     }
 }

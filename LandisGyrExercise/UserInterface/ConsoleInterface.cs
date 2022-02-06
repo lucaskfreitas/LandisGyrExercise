@@ -2,14 +2,15 @@
 using LandisGyrExercise.Enumerables;
 using LandisGyrExercise.Model;
 using System;
+using System.Text;
 
 namespace LandisGyrExercise.UserInterface
 {
     public class ConsoleInterface : IUserInterface
     {
-        private MainController _controller = null;
+        private IController _controller = null;
 
-        public void SetController(MainController controller)
+        public void SetController(IController controller)
         {
             _controller = controller;
         }
@@ -50,22 +51,10 @@ namespace LandisGyrExercise.UserInterface
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("An exception has occurred:");
+                    Console.WriteLine("Something went wrong");
                     Console.WriteLine(e.Message);
                 }
             }
-        }
-
-        private static bool ConfirmAction()
-        {
-            Console.WriteLine("Are you sure? (y/n)");
-
-            return Console.ReadLine() switch
-            {
-                "y" or "Y" => true,
-                "n" or "N" => false,
-                _ => throw new InvalidOperationException(),
-            };
         }
 
         public void PrintEndpointData(Endpoint endpoint)
@@ -80,52 +69,154 @@ namespace LandisGyrExercise.UserInterface
             Console.WriteLine("");
         }
 
-        private static UserAction QueryAction()
+        public void AskUserForEndpointData(Endpoint newEndpoint)
         {
-            Console.WriteLine("");
-            Console.WriteLine("What do you want to do?");
-            Console.WriteLine("Possible actions:");
-            Console.WriteLine("1 - Add a new endpoint");
-            Console.WriteLine("2 - Edit an existing endpoint");
-            Console.WriteLine("3 - Delete an endpoint");
-            Console.WriteLine("4 - List all endpoint");
-            Console.WriteLine("5 - Find an endpoint");
-            Console.WriteLine("6 - Exit");
-            Console.WriteLine("");
+            newEndpoint.MeterModelId = AskUserForMeterModel();
 
-            string userInput = Console.ReadLine();
-            return Enum.Parse<UserAction>(userInput);
-        }
+            newEndpoint.MeterNumber = AskUserForMeterNumber();
 
-        public string QueryMeterFirmwareVersion()
-        {
             Console.WriteLine("What is the meter firmware version?");
-            return Console.ReadLine();
+            newEndpoint.MeterFirmwareVersion = Console.ReadLine();
+
+            newEndpoint.SwitchState = AskUserForSwitchState();
         }
 
-        public int QueryMeterModelId()
-        {
-            Console.WriteLine("What is the meter model ID?");
-            return int.Parse(Console.ReadLine());
-        }
-
-        public int QueryMeterNumber()
-        {
-            Console.WriteLine("What is the meter number?");
-            return int.Parse(Console.ReadLine());
-        }
-
-        public string QuerySerialNumber()
+        public string AskUserForSerialNumber()
         {
             Console.WriteLine("What is the serial number?");
             return Console.ReadLine();
         }
 
-        public SwitchState QuerySwitchState()
+        public SwitchState AskUserForSwitchState()
         {
-            Console.WriteLine("Select a switch state: 0 = Disconnected, 1 = Connected, 2 = Armed");
-            int choice = int.Parse(Console.ReadLine());
-            return (SwitchState)choice;
+            bool validInput = false;
+            int switchState = 0;
+
+            while (!validInput)
+            {
+                Console.WriteLine("Select a switch state: 0 = Disconnected, 1 = Connected, 2 = Armed");
+
+                try
+                {
+                    if (!int.TryParse(Console.ReadLine(), out switchState))
+                        throw new ArgumentException();
+
+                    if (!Enum.IsDefined(typeof(SwitchState), switchState))
+                        throw new ArgumentException();
+
+                    validInput = true;
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Invalid option.");
+                }
+            }
+
+            return (SwitchState)switchState;
+        }
+
+        private static int AskUserForMeterNumber()
+        {
+            bool validInput = false;
+            int meterNumber = 0;
+
+            while (!validInput)
+            {
+                Console.WriteLine("What is the meter number?");
+
+                try
+                {
+                    if (!int.TryParse(Console.ReadLine(), out meterNumber))
+                        throw new ArgumentException();
+
+                    validInput = true;
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Invalid number.");
+                }
+            }
+
+            return meterNumber;
+        }
+
+        private static MeterModel AskUserForMeterModel()
+        {
+            bool validInput = false;
+            int meterModel = 0;
+
+            while (!validInput)
+            {
+                Console.WriteLine("What is the meter model ID?");
+
+                try
+                {
+                    if (!int.TryParse(Console.ReadLine(), out meterModel))
+                        throw new ArgumentException();
+
+                    if (!Enum.IsDefined(typeof(MeterModel), meterModel))
+                        throw new ArgumentException();
+
+                    validInput = true;
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Invalid number.");
+                }
+            }
+
+            return (MeterModel)meterModel;
+        }
+
+        private static UserAction QueryAction()
+        {
+            StringBuilder stringBuilder = new("");
+            stringBuilder.AppendLine("What do you want to do?");
+            stringBuilder.AppendLine("Possible actions:");
+            stringBuilder.AppendLine("1 - Add a new endpoint");
+            stringBuilder.AppendLine("2 - Edit an existing endpoint");
+            stringBuilder.AppendLine("3 - Delete an endpoint");
+            stringBuilder.AppendLine("4 - List all endpoint");
+            stringBuilder.AppendLine("5 - Find an endpoint");
+            stringBuilder.AppendLine("6 - Exit");
+            stringBuilder.AppendLine("");
+
+            bool validInput = false;
+            int userInput = 0;
+
+            while (!validInput)
+            {
+                Console.Write(stringBuilder.ToString());
+
+                try
+                {
+                    if (!int.TryParse(Console.ReadLine(), out userInput))
+                        throw new ArgumentException();
+
+                    if (!Enum.IsDefined(typeof(UserAction), userInput))
+                        throw new ArgumentException();
+
+                    validInput = true;
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Invalid option.");
+                }
+            }
+
+            return (UserAction)userInput;
+        }
+
+        private static bool ConfirmAction()
+        {
+            Console.WriteLine("Are you sure? (y/n)");
+
+            return Console.ReadLine() switch
+            {
+                "y" or "Y" => true,
+                "n" or "N" => false,
+                _ => throw new InvalidOperationException(),
+            };
         }
     }
 }

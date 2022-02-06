@@ -9,41 +9,32 @@ namespace LandisGyrExerciseTests
     public class EndpointTests
     {
         [TestMethod]
-        public void FixedMeterModel1()
+        public void MeterModelEnum()
         {
-            Endpoint endpoint = new("NSX1P2W");
-            Assert.AreEqual(16, endpoint.MeterModelId);
-            Assert.ThrowsException<InvalidOperationException>(() => endpoint.MeterModelId = 1000);
-        }
+            Endpoint endpoint = new("ABCDE");
 
-        [TestMethod]
-        public void FixedMeterModel2()
-        {
-            Endpoint endpoint = new("NSX1P3W");
-            Assert.AreEqual(17, endpoint.MeterModelId);
-            Assert.ThrowsException<InvalidOperationException>(() => endpoint.MeterModelId = 1000);
-        }
+            endpoint.MeterModelId = (MeterModel)16;
+            Assert.IsTrue(endpoint.MeterModelId == MeterModel.NSX1P2W);
 
-        [TestMethod]
-        public void FixedMeterModel3()
-        {
-            Endpoint endpoint = new("NSX2P3W");
-            Assert.AreEqual(18, endpoint.MeterModelId);
-            Assert.ThrowsException<InvalidOperationException>(() => endpoint.MeterModelId = 1000);
-        }
+            endpoint.MeterModelId = (MeterModel)17;
+            Assert.IsTrue(endpoint.MeterModelId == MeterModel.NSX1P3W);
 
-        [TestMethod]
-        public void FixedMeterModel4()
-        {
-            Endpoint endpoint = new("NSX3P4W");
-            Assert.AreEqual(19, endpoint.MeterModelId);
-            Assert.ThrowsException<InvalidOperationException>(() => endpoint.MeterModelId = 1000);
+            endpoint.MeterModelId = (MeterModel)18;
+            Assert.IsTrue(endpoint.MeterModelId == MeterModel.NSX2P3W);
+
+            endpoint.MeterModelId = (MeterModel)19;
+            Assert.IsTrue(endpoint.MeterModelId == MeterModel.NSX3P4W);
+
+            Assert.ThrowsException<InvalidCastException>(() =>
+            {
+                endpoint.MeterModelId = (MeterModel)20;
+            });
         }
 
         [TestMethod]
         public void SwitchStateEnum()
         {
-            Endpoint endpoint = new("NSX1P2W");
+            Endpoint endpoint = new("ABCDE");
 
             endpoint.SwitchState = 0;
             Assert.IsTrue(endpoint.SwitchState == SwitchState.Disconnected);

@@ -9,7 +9,6 @@ namespace LandisGyrExercise.EndpointRepository
         public bool ExistsEndpoint(string serialNumber);
         public Endpoint GetEndpoint(string serialNumber);
         public IEnumerable<Endpoint> GetAllEndpoints();
-        public void DeleteEndpoint(Endpoint endpoint);
         public void DeleteEndpoint(string serialNumber);
     }
 }
