@@ -40,5 +40,16 @@ namespace LandisGyrExerciseTests
                 endpointDatabase.DeleteEndpoint("garbage serial number");
             });
         }
+
+        [TestMethod]
+        public void EndpointExists()
+        {
+            Endpoint endpoint = new("some serial number");
+            EndpointMemoryDatabase endpointDatabase = new();
+
+            Assert.IsFalse(endpointDatabase.ExistsEndpoint(endpoint.SerialNumber));
+            endpointDatabase.AddEndpoint(endpoint);
+            Assert.IsTrue(endpointDatabase.ExistsEndpoint(endpoint.SerialNumber));
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace LandisGyrExercise.UserInterface
                             break;
 
                         case UserAction.Exit:
-                            if (ConfirmAction())
+                            if (ConfirmAction("Are you sure you want to quit the application?"))
                                 return;
                             break;
                     }
@@ -55,6 +55,17 @@ namespace LandisGyrExercise.UserInterface
                     Console.WriteLine(e.Message);
                 }
             }
+        }
+
+        public bool ConfirmAction(string message)
+        {
+            Console.WriteLine($"{message} (y/n)");
+
+            return Console.ReadLine() switch
+            {
+                "y" or "Y" => true,
+                _ => false
+            };
         }
 
         public void PrintEndpointData(Endpoint endpoint)
@@ -79,7 +90,7 @@ namespace LandisGyrExercise.UserInterface
 
         public string AskUserForSerialNumber()
         {
-            Console.WriteLine("What is the serial number?");
+            Console.WriteLine("What is the endpoint serial number?");
             return Console.ReadLine();
         }
 
@@ -90,7 +101,13 @@ namespace LandisGyrExercise.UserInterface
 
         private static MeterModel AskUserForMeterModelId()
         {
-            return AskUserFor<MeterModel>("What is the meter model ID?");
+            StringBuilder stringBuilder = new();
+            stringBuilder.AppendLine("What is the meter model ID?");
+            stringBuilder.AppendLine("Valid values:");
+            foreach (var a in Enum.GetValues(typeof(MeterModel)))
+                stringBuilder.AppendLine($"-> {(int)a} = model {a}");
+
+            return AskUserFor<MeterModel>(stringBuilder.ToString());
         }
 
         private static int AskUserForMeterNumber()
@@ -105,10 +122,12 @@ namespace LandisGyrExercise.UserInterface
                 {
                     if (!int.TryParse(Console.ReadLine(), out meterNumber))
                         throw new ArgumentException();
+                    if (meterNumber <= 0)
+                        throw new ArgumentException();
                 }
                 catch (ArgumentException)
                 {
-                    Console.WriteLine("Invalid number.");
+                    Console.WriteLine("Invalid argument. Please type a number greater than zero.");
                 }
             }
 
@@ -135,17 +154,6 @@ namespace LandisGyrExercise.UserInterface
             stringBuilder.Append("6 - Exit");
 
             return AskUserFor<UserAction>(stringBuilder.ToString());
-        }
-
-        private static bool ConfirmAction()
-        {
-            Console.WriteLine("Are you sure? (y/n)");
-
-            return Console.ReadLine() switch
-            {
-                "y" or "Y" => true,
-                _ => false
-            };
         }
 
         private static T AskUserFor<T>(string message) where T : Enum

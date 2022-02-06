@@ -50,7 +50,12 @@ namespace LandisGyrExercise.Controller
         public void DeleteEndpoint()
         {
             string serialNumber = _userInterface.AskUserForSerialNumber();
-            _endpointRepository.DeleteEndpoint(serialNumber);
+
+            if (!_endpointRepository.ExistsEndpoint(serialNumber))
+                throw new InvalidOperationException("There is no endpoint with this serial number.");
+
+            if (_userInterface.ConfirmAction($"Are you sure you want to delete the endpoint with serial number {serialNumber}?"))
+                _endpointRepository.DeleteEndpoint(serialNumber);
         }
 
         public void ListAllEndpoints()

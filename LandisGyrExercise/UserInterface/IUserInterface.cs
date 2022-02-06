@@ -12,5 +12,6 @@ namespace LandisGyrExercise.UserInterface
         public void AskUserForEndpointData(Endpoint newEndpoint);
         public string AskUserForSerialNumber();
         public SwitchState AskUserForSwitchState();
+        public bool ConfirmAction(string message);
     }
 }
